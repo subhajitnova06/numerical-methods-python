@@ -1,37 +1,50 @@
-# numerical-methods-python
-Python implementations of interpolation, integration, differential equation solvers, and linear algebra methods.
+# Numerical Physics Simulations using RK4
 
-# Simple Pendulum Simulation using RK4 Method
+This repository contains Python implementations of numerical simulations for classical physical systems. It leverages the **4th-order Runge-Kutta (RK4)** numerical method to solve the non-linear and linear Ordinary Differential Equations (ODEs) governing these systems.
 
-This repository contains a Python implementation that numerically solves the non-linear equations of motion for a simple pendulum. It utilizes the **4th-order Runge-Kutta (RK4)** mathematical framework to simulate how the pendulum's angle changes over time.
+## 📌 Repository Overview
 
-## Mathematical Overview
+The repository is structured into two primary simulation projects:
 
-The motion of a simple pendulum is described by the following second-order non-linear ordinary differential equation (ODE):
+| Project Folder / File | System Type | Mathematical Nature | Physical Phenomenon |
+| :--- | :--- | :--- | :--- |
+| `01_Simple_Pendulum/` | Mechanical | Non-linear Second-Order ODE | Angular displacement & Period lengthening |
+| `02_LCR_Circuit/` | Electrical | Linear Second-Order ODE | Damping states (Over, Critical, Under) |
 
-$$\frac{d^2\theta}{dt^2} + \frac{g}{L}\sin(\theta) = 0$$
+---
 
-Where:
-* $\theta$: Angular displacement (radians)
-* $g$: Acceleration due to gravity ($9.8 \text{ m/s}^2$)
-* $L$: Length of the pendulum ($1 \text{ m}$)
+## 🛠️ Mathematical Framework: The RK4 Method
 
-To solve this numerically, the second-order ODE is broken down into a system of two coupled first-order ODEs:
+Both simulations break down their respective second-order differential equations into a coupled system of two first-order ODEs:
 
-1.  $\frac{d\theta}{dt} = \omega$
-2.  $\frac{d\omega}{dt} = -\frac{g}{L}\sin(\theta)$
+$$\frac{dx}{dt} = f_1(t, x, y), \quad \frac{dy}{dt} = f_2(t, x, y)$$
 
-The **RK4 method** is then applied to iteratively compute the values of $\theta$ and $\omega$ across a discrete time domain.
+The **Runge-Kutta 4th-order algorithm** approximates the next step by calculating a weighted average of four incremental slopes ($k_1, k_2, k_3, k_4$), achieving a local truncation error of $O(h^5)$.
 
-## Features
+---
 
-* **Custom RK4 Solver:** A pure Python implementation of the Runge-Kutta 4th-order algorithm.
-* **Non-linear Dynamics:** Handles large initial angles where the small-angle approximation ($\sin(\theta) \approx \theta$) breaks down.
-* **Multi-case Comparison:** Simulates and compares three different initial angular displacements ($\theta_0 = 0.1, 1.0,$ and $2.5$ radians).
+## 📂 Project Modules
 
-## Dependencies
+### 1. Simple Pendulum Simulation
+Models the chaotic-capable, non-linear dynamics of a rigid simple pendulum of length $L=1\text{ m}$ under gravity ($g=9.8\text{ m/s}^2$). 
 
-Make sure you have the following Python packages installed:
+* **Governing Equation:** $$\frac{d^2\theta}{dt^2} + \frac{g}{L}\sin(\theta) = 0$$
+* **Key Insight:** Demonstrates how the small-angle approximation ($\sin(\theta) \approx \theta$) fails at larger initial displacements ($\theta_0 = 2.5\text{ rad}$), resulting in a visibly longer oscillation period.
 
+### 2. Series LCR Circuit Transient Response
+Models the transient charging response of an Inductor ($L$), Capacitor ($C$), and Resistor ($R$) network connected to a constant DC voltage source ($E=1\text{ V}$).
+
+* **Governing Equation:** $$L\frac{d^2q}{dt^2} + R\frac{dq}{dt} + \frac{q}{C} = E$$
+* **Key Insight:** Evaluates the system across three boundary states calculated from the critical damping resistance ($R_c = 2\sqrt{L/C}$):
+    * **Overdamped ($1.5 \cdot R_c$):** Slow, non-oscillatory approach to steady-state.
+    * **Critically Damped ($R_c$):** Fastest possible approach to equilibrium without overshoot.
+    * **Underdamped ($0.5 \cdot R_c$):** Decaying oscillations around the final charge state ($q = E \cdot C$).
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+Ensure you have Python 3 installed along with the required scientific computing libraries:
 ```bash
 pip install numpy matplotlib
